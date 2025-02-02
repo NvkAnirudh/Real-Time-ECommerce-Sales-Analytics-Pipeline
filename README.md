@@ -12,6 +12,7 @@ How to create a Maven Project (Java + Flink)
 brew install maven
 ```
 - Run the following command (Update the details as per the project):
+```
 mvn archetype:generate \
   -DarchetypeGroupId=org.apache.flink \
   -DarchetypeArtifactId=flink-quickstart-java \
@@ -20,6 +21,7 @@ mvn archetype:generate \
   -DartifactId=flink-project \
   -Dversion=1.0-SNAPSHOT \
   -DinteractiveMode=false
+```
 - Once the project and required dependencies are built, start working on the Flink application. 
 
 How to run Flink's taskmanager.sh (for 1.20.0, you need to run start-cluster.sh for Flink <= 1.18.0)
