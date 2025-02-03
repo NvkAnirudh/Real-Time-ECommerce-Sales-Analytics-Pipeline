@@ -1,3 +1,5 @@
+# Real-Time E-commerce Sales Analytics Pipeline
+
 Added the below connectors and dependencies to Flink (pom.xml):
 - Kafka 
 - Postgres
