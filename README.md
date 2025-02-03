@@ -1,7 +1,9 @@
-Added the below connectors to Flink (pom.xml):
+Added the below connectors and dependencies to Flink (pom.xml):
 - Kafka 
 - Postgres
 - Elastic Search
+- lombok
+- jdbc
 
 To run Flink on Mac VS Code (Flink: 1.20.0, Java (jvm): 21):
 
