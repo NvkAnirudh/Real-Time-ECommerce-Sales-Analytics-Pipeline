@@ -1,72 +1,159 @@
-# Real-Time E-commerce Sales Analytics Pipeline
+# Real-Time E-Commerce Sales Analytics Pipeline
 
-Added the below connectors and dependencies to Flink (pom.xml):
-- Kafka 
-- Postgres
-- Elastic Search
-- lombok
-- jdbc
+This repository contains an **Apache Flink** application designed for real-time **sales analytics** in an **E-Commerce** setting. The application processes financial transaction data from **Kafka**, performs aggregations, and stores the results in **Postgres** and **Elasticsearch** for further analysis.
 
-Flow of the project:
-Python script (main.py) -> Kafka Consumers -> Flink -> Postgres
+## 🚀 Features
+- Real-time financial transaction processing using **Apache Flink**
+- Data ingestion from **Kafka**
+- Aggregations and transformations on transaction streams
+- Data storage in **Postgres** for structured queries
+- Data indexing in **Elasticsearch** for analytics and visualization
+- Fully containerized setup using **Docker Compose**
 
-Order of Execution:
-1) Create a Flink job
-    - Run the below commands to clean, compile, and build a .jar package
-    ```
-    mvn clean
-    mvn compile
-    mvn package
-    ```
-    - Run the below command to start the Flink job:
-    ```
-    /opt/homebrew/Cellar/apache-flink/1.20.0/bin/flink run -c flinkecommerce.DataStreamJob target/flinkecommerce-1.0-SNAPSHOT.jar
-    ```
-        - /opt/homebrew/Cellar/apache-flink/1.20.0/bin/flink - Flink directory
-        - flinkecommerce - Flink package name
-        - target/flinkecommerce-1.0-SNAPSHOT.jar - .jar Flink package's (built using mvn commands above) relative path
+---
 
-2) Once the job is created, it is ready to take data from kafka consumers, which indeed receive data from the application (main.py). So, now run the main.py to start generating data.
+## 📌 Requirements
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+- [Apache Flink](https://flink.apache.org/)
+- [Kafka](https://kafka.apache.org/)
+- [Postgres](https://www.postgresql.org/)
+- [Elasticsearch](https://www.elastic.co/elasticsearch/)
+
+---
+
+## 🏗 Architecture
+The system processes transaction data through the following pipeline:
+
+1. **Python Script (`main.py`)** - Generates and publishes sales transactions to Kafka.
+2. **Kafka Consumers** - Reads transaction data from Kafka.
+3. **Flink (`DataStreamJob.java`)** - Processes, aggregates, and transforms streaming data.
+4. **Postgres** - Stores structured transaction data and analytics tables.
+5. **Elasticsearch** - Indexes transaction data for analytics and fast querying.
+
+![System Architecture](System_Architecture.png)
+
+---
+
+## 🛠 Installation and Setup
+
+### Clone the Repository
+```sh
+ git clone https://github.com/yourusername/flink-ecommerce-analytics.git
+ cd flink-ecommerce-analytics
 ```
-python main.py
+
+### Start Required Services
+```sh
+ docker-compose up -d
+```
+This starts **Flink**, **Kafka**, **Postgres**, and **Elasticsearch**.
+
+### Generate Transaction Data
+Run the following Python script to generate mock sales transactions:
+```sh
+ python main.py
 ```
 
-3) After the first two steps, check the postgresql database to find the streaming data. 
-
-
-
-To run Flink on Mac VS Code (Flink: 1.20.0, Java (jvm): 21):
-
-How to create a Maven Project (Java + Flink)
-- Install extensions on VS Code - Maven For Java, Extension Pack for Java
-- Install maven using brew 
+### Build and Run the Flink Application
+```sh
+mvn clean
+mvn compile
+mvn package
 ```
-brew install maven
+Run the Flink job using:
+```sh
+/opt/homebrew/Cellar/apache-flink/1.20.0/bin/flink run -c flinkecommerce.DataStreamJob target/flinkecommerce-1.0-SNAPSHOT.jar
 ```
-- Run the following command (Update the details as per the project):
+
+### Verify Data Processing
+- **Postgres**: Check the database for streaming data.
+- **Elasticsearch**: Query indexed data for analytics.
+- **Flink UI**: Monitor job status at [http://localhost:8081](http://localhost:8081).
+
+---
+
+## 📂 Code Structure
 ```
-mvn archetype:generate \
-  -DarchetypeGroupId=org.apache.flink \
-  -DarchetypeArtifactId=flink-quickstart-java \
-  -DarchetypeVersion=1.16.0 \
-  -DgroupId=com.example \
-  -DartifactId=flink-project \
-  -Dversion=1.0-SNAPSHOT \
+flink-ecommerce-analytics/
+│── src/main/java/flinkecommerce/
+│   ├── DataStreamJob.java         # Flink processing logic
+│   ├── Deserializer               # Custom Kafka deserializer
+│   ├── Dto                        # Data Transfer Objects (DTOs)
+│   ├── utils                      # Utility functions
+│── docker-compose.yml             # Containerized setup
+│── main.py                        # Sales transaction generator
+│── pom.xml                        # Maven dependencies
+│── README.md                      # Project documentation
+```
+
+---
+
+## 🔧 Configuration
+### Kafka Settings
+- Bootstrap Servers: `localhost:9092`
+- Topic: `transactions`
+- Consumer Group ID: `flink-consumer`
+
+### Postgres Settings
+- URL: `jdbc:postgresql://localhost:5432/ecommerce`
+- Username: `postgres`
+- Password: `password`
+
+### Elasticsearch Settings
+- Host: `http://localhost:9200`
+- Index: `transactions`
+
+---
+
+## 🔗 Dependencies (Added in `pom.xml`)
+- **Kafka Connector**: `flink-connector-kafka`
+- **Postgres Connector**: `flink-jdbc`
+- **Elasticsearch Connector**: `flink-connector-elasticsearch`
+- **Lombok**: `lombok`
+
+---
+
+## 📝 Running Flink on Mac (VS Code)
+### Install Required Tools
+```sh
+brew install maven apache-flink
+```
+
+### Create a Maven Project
+```sh
+mvn archetype:generate \  
+  -DarchetypeGroupId=org.apache.flink \  
+  -DarchetypeArtifactId=flink-quickstart-java \  
+  -DarchetypeVersion=1.16.0 \  
+  -DgroupId=com.example \  
+  -DartifactId=flink-project \  
+  -Dversion=1.0-SNAPSHOT \  
   -DinteractiveMode=false
 ```
-- Once the project and required dependencies are built, start working on the Flink application. 
 
-How to run Flink's taskmanager.sh (for 1.20.0, you need to run start-cluster.sh for Flink <= 1.18.0)
-- Install Flink using brew
-```
-brew install apache-flink
-```
-- Head to your Flink's directory at 
-```
-/opt/homebrew/Cellar/apache-flink/1.20.0/libexec
-```
-- Run (you need to start jobmanager and taskmanager for the Flink UI)
-```
+### Start Flink Cluster
+```sh
+cd /opt/homebrew/Cellar/apache-flink/1.20.0/libexec
 bin/jobmanager.sh start
 bin/taskmanager.sh start
 ```
+
+---
+
+## 🏆 Contribution
+Feel free to open issues or submit pull requests to improve this project.
+
+---
+
+## 📜 License
+This project is licensed under the MIT License.
+
+---
+
+## 📞 Contact
+For questions, reach out to **your.email@example.com** or create an issue in this repository.
+
+---
+
+Enjoy real-time sales analytics with **Apache Flink** 🚀!
