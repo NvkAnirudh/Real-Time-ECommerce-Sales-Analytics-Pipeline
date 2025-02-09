@@ -151,9 +151,4 @@ This project is licensed under the [MIT License](https://github.com/NvkAnirudh/R
 
 ---
 
-## 📞 Contact
-For questions, reach out to **your.email@example.com** or create an issue in this repository.
-
----
-
 Enjoy real-time sales analytics with **Apache Flink** 🚀!
