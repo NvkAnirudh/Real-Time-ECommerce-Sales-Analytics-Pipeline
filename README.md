@@ -147,7 +147,7 @@ Feel free to open issues or submit pull requests to improve this project.
 ---
 
 ## 📜 License
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](https://github.com/NvkAnirudh/Real-Time-ECommerce-Sales-Analytics-Pipeline/blob/main/LICENSE).
 
 ---
 
