@@ -151,4 +151,7 @@ This project is licensed under the [MIT License](https://github.com/NvkAnirudh/R
 
 ---
 
+## References
+[CodeWithYu](https://www.youtube.com/@CodeWithYu) has amazing projects! 
+
 Enjoy real-time sales analytics with **Apache Flink** 🚀!
